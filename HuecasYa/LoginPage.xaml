@@ -1,0 +1,90 @@
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"  
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"  
+             x:Class="HuecasYa.LoginPage"  
+             Title=""  
+             BackgroundColor="{StaticResource Gray50}">
+
+    <ScrollView>
+        <VerticalStackLayout Padding="30,60" Spacing="20" VerticalOptions="Center">
+            <Frame BackgroundColor="White"
+                   CornerRadius="20"
+                   HasShadow="True"
+                   Padding="28"
+                   Margin="0,30,0,30"
+                   BorderColor="{StaticResource Primary}"
+                   HorizontalOptions="Fill"
+                   VerticalOptions="Start">
+                <VerticalStackLayout Spacing="18"
+                                     HorizontalOptions="Fill"
+                                     VerticalOptions="Start">
+
+                    <Image
+                        Source="logo.png"
+                        HeightRequest="120"
+                        Aspect="AspectFit"
+                        SemanticProperties.Description="Logo de la app"
+                        HorizontalOptions="Center" />
+
+                    <Label Text="¡Descubre tu próxima hueca favorita!"
+                           FontSize="26"
+                           FontAttributes="Bold"
+                           TextColor="{StaticResource Primary}"
+                           HorizontalOptions="Center"
+                           HorizontalTextAlignment="Center" />
+
+                    <Label Text="Inicia sesión y encuentra los mejores sabores cerca de ti"
+                           FontSize="15"
+                           TextColor="{StaticResource Gray600}"
+                           HorizontalOptions="Center"
+                           HorizontalTextAlignment="Center"
+                           Margin="0,0,0,8"/>
+
+                    <Entry Placeholder="Banner"
+                           Keyboard="Text"
+                           x:Name="BannerEntry"
+                           BackgroundColor="{StaticResource Gray100}"
+                           TextColor="{StaticResource Gray900}"
+                           PlaceholderColor="{StaticResource Gray600}"
+                           HeightRequest="48" />
+
+                    <Entry Placeholder="Contraseña"
+                           Keyboard="Password"
+                           x:Name="PasswordEntry"
+                           BackgroundColor="{StaticResource Gray100}"
+                           TextColor="{StaticResource Gray900}"
+                           PlaceholderColor="{StaticResource Gray600}"
+                           IsPassword="True"
+                           HeightRequest="48" />
+
+                    <Button Text="¿Olvidaste tu contraseña?"
+                            Clicked="OnRecuperarContrasena_Clicked"
+                            BackgroundColor="Transparent"
+                            TextColor="{StaticResource Primary}"
+                            FontSize="14"
+                            FontAttributes="Bold"
+                            Padding="0"
+                            HorizontalOptions="Center" />
+
+                    <Button Text="Ingresar"
+                            BackgroundColor="{StaticResource Primary}"
+                            TextColor="White"
+                            CornerRadius="12"
+                            FontSize="18"
+                            HeightRequest="50"
+                            Shadow="True"
+                            Clicked="OnLogin_Clicked" />
+
+                    <Button Text="¿No tienes cuenta? Regístrate"
+                            Clicked="OnRegisterRedirect_Clicked"
+                            BackgroundColor="Transparent"
+                            TextColor="{StaticResource Primary}"
+                            FontSize="14"
+                            FontAttributes="Bold"
+                            Padding="0"
+                            HorizontalOptions="Center" />
+
+                </VerticalStackLayout>
+            </Frame>
+        </VerticalStackLayout>
+    </ScrollView>
+</ContentPage>

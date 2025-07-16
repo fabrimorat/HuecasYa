@@ -1,0 +1,179 @@
+﻿@model Backend.Models.RestauranteModel
+@{
+    ViewData["Title"] = "Crear Restaurante";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<!-- 🎨 Estilos personalizados -->
+<style>
+    .btn-guardar {
+        background-color: #9C1C2F;
+        color: white;
+        border: none;
+        padding: 10px 20px;
+        font-weight: 500;
+        border-radius: 6px;
+        transition: background-color 0.3s ease, transform 0.2s ease;
+    }
+
+        .btn-guardar:hover {
+            background-color: #7f1827;
+            transform: scale(1.05);
+        }
+
+    .btn-agregar {
+        background-color: #9C1C2F;
+        color: white;
+        font-size: 14px;
+        border: none;
+        border-radius: 6px;
+        padding: 6px 12px;
+        transition: background-color 0.3s ease, transform 0.2s ease;
+    }
+
+        .btn-agregar:hover {
+            background-color: #7f1827;
+            transform: scale(1.05);
+        }
+
+    .categoria {
+        border: 1px solid #ddd;
+        border-radius: 6px;
+        padding: 16px;
+        background-color: #fafafa;
+    }
+
+    h2 {
+        color: #9C1C2F;
+        font-weight: bold;
+    }
+
+    h4 {
+        color: #7f1827;
+    }
+</style>
+
+<h2 class="mb-3">🍽️ Crear Restaurante</h2>
+
+<form asp-action="Crear" method="post">
+    @Html.AntiForgeryToken()
+
+    <div class="mb-3">
+        <label>Nombre:</label>
+        <input type="text" name="Nombre" class="form-control" required />
+    </div>
+
+    <div class="mb-3">
+        <label>Ubicación:</label>
+        <input type="text" name="Ubicacion" class="form-control" required />
+    </div>
+
+    <div class="row">
+        <div class="col-md-4 mb-3">
+            <label>Horario:</label>
+            <input type="text" name="Horario" class="form-control" />
+        </div>
+        <div class="col-md-4 mb-3">
+            <label>Horario Apertura:</label>
+            <input type="time" name="HorarioApertura" class="form-control" />
+        </div>
+        <div class="col-md-4 mb-3">
+            <label>Horario Cierre:</label>
+            <input type="time" name="HorarioCierre" class="form-control" />
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-6 mb-3">
+            <label>Latitud:</label>
+            <input type="number" step="any" name="Latitud" class="form-control" />
+        </div>
+        <div class="col-md-6 mb-3">
+            <label>Longitud:</label>
+            <input type="number" step="any" name="Longitud" class="form-control" />
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-4 mb-3">
+            <label>Precio Promedio:</label>
+            <input type="number" step="0.01" name="PrecioPromedio" class="form-control" />
+        </div>
+        <div class="col-md-4 mb-3">
+            <label>Tiempo Atención (min):</label>
+            <input type="number" name="TiempoAtencionMinutos" class="form-control" />
+        </div>
+        <div class="col-md-4 mb-3">
+            <label>Calificación:</label>
+            <input type="number" step="0.1" name="Calificacion" class="form-control" />
+        </div>
+    </div>
+
+    <div class="mb-3">
+        <label>Preferencias Alimenticias (coma separadas):</label>
+        <input type="text" name="PreferenciasAlimenticias" class="form-control" />
+    </div>
+
+    <div class="mb-3">
+        <label>Situaciones Sociales:</label>
+        <select name="SituacionesSociales" multiple class="form-select">
+            <option value="solitario">Solitario</option>
+            <option value="grupo">Grupo</option>
+            <option value="cita">Cita</option>
+            <option value="cumpleaños">Cumpleaños</option>
+        </select>
+    </div>
+
+    <div class="mb-3">
+        <label>Métodos de Pago:</label>
+        <select name="MetodosPago" multiple class="form-select">
+            <option value="efectivo">Efectivo</option>
+            <option value="tarjeta">Tarjeta</option>
+            <option value="transferencia">Transferencia</option>
+        </select>
+    </div>
+
+    <hr />
+    <h4>📂 Categorías de Menú</h4>
+    <div id="categorias-container"></div>
+
+    <button type="button" onclick="agregarCategoria()" class="btn-agregar mt-3 mb-4">
+        ➕ Agregar Categoría
+    </button>
+
+    <div>
+        <button type="submit" class="btn-guardar">✅ Guardar Restaurante</button>
+    </div>
+</form>
+
+@section Scripts {
+    <script>
+        let categoriaIndex = 0;
+        const platosCounter = {};
+
+        function agregarCategoria() {
+            const index = categoriaIndex++;
+            platosCounter[index] = 0;
+
+            const html = `
+            <div class="categoria mb-3 p-3">
+                <h5>Categoría ${index + 1}</h5>
+                <input type="text" name="CategoriasMenu[${index}].NombreCategoria" class="form-control mb-2" required />
+                <div id="platos-${index}"></div>
+                <button type="button" class="btn-agregar btn-sm" onclick="agregarPlato(${index})">➕ Agregar Plato</button>
+            </div>`;
+            document.getElementById("categorias-container").insertAdjacentHTML("beforeend", html);
+        }
+
+        function agregarPlato(catIdx) {
+            const index = platosCounter[catIdx]++;
+            const html = `
+            <div class="plato border p-3 mt-2 rounded bg-light">
+                <input type="text" name="CategoriasMenu[${catIdx}].Platos[${index}].Nombre" class="form-control mb-2" placeholder="Nombre" required />
+                <input type="text" name="CategoriasMenu[${catIdx}].Platos[${index}].Descripcion" class="form-control mb-2" placeholder="Descripción" />
+                <input type="number" step="0.01" name="CategoriasMenu[${catIdx}].Platos[${index}].Precio" class="form-control" placeholder="Precio" required />
+            </div>`;
+            document.getElementById(`platos-${catIdx}`).insertAdjacentHTML("beforeend", html);
+        }
+    </script>
+}

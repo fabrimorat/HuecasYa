@@ -1,0 +1,247 @@
+﻿@model Backend.Models.RestauranteModel
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+
+@{
+    ViewData["Title"] = "Editar Restaurante";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<!-- 🎨 Estilos personalizados -->
+<style>
+    h2, h4 {
+        color: #9C1C2F;
+        font-weight: bold;
+    }
+
+    .btn-guardar {
+        background-color: #9C1C2F;
+        color: white;
+        border: none;
+        padding: 10px 20px;
+        font-weight: 500;
+        border-radius: 6px;
+        transition: background-color 0.3s ease, transform 0.2s ease;
+    }
+
+        .btn-guardar:hover {
+            background-color: #7f1827;
+            transform: scale(1.05);
+        }
+
+    .btn-agregar {
+        background-color: #9C1C2F;
+        color: white;
+        font-size: 14px;
+        border: none;
+        border-radius: 6px;
+        padding: 6px 12px;
+        transition: background-color 0.3s ease, transform 0.2s ease;
+    }
+
+        .btn-agregar:hover {
+            background-color: #7f1827;
+            transform: scale(1.05);
+        }
+
+    .categoria-block {
+        background-color: #fafafa;
+        border: 1px solid #ddd;
+        border-radius: 6px;
+        padding: 16px;
+    }
+
+    .plato-block {
+        background-color: #f1f1f1;
+    }
+</style>
+
+<div class="container mt-4">
+    <h2 class="mb-4">✏️ Editar Restaurante</h2>
+    <form asp-action="Editar" method="post">
+        @Html.AntiForgeryToken()
+        <input type="hidden" asp-for="Id" />
+
+        <div class="row g-3">
+            <div class="col-md-6">
+                <label class="form-label">Nombre:</label>
+                <input asp-for="Nombre" class="form-control" />
+            </div>
+            <div class="col-md-6">
+                <label class="form-label">Ubicación:</label>
+                <input asp-for="Ubicacion" class="form-control" />
+            </div>
+
+            <div class="col-md-4">
+                <label class="form-label">Horario:</label>
+                <input asp-for="Horario" class="form-control" />
+            </div>
+            <div class="col-md-4">
+                <label class="form-label">Horario Apertura:</label>
+                <input asp-for="HorarioApertura" type="time" class="form-control" />
+            </div>
+            <div class="col-md-4">
+                <label class="form-label">Horario Cierre:</label>
+                <input asp-for="HorarioCierre" type="time" class="form-control" />
+            </div>
+
+            <div class="col-md-6">
+                <label class="form-label">Latitud:</label>
+                <input asp-for="Latitud" class="form-control" />
+            </div>
+            <div class="col-md-6">
+                <label class="form-label">Longitud:</label>
+                <input asp-for="Longitud" class="form-control" />
+            </div>
+
+            <div class="col-md-4">
+                <label class="form-label">Calificación:</label>
+                <input asp-for="Calificacion" class="form-control" />
+            </div>
+            <div class="col-md-4">
+                <label class="form-label">Precio Promedio:</label>
+                <input asp-for="PrecioPromedio" class="form-control" />
+            </div>
+            <div class="col-md-4">
+                <label class="form-label">Tiempo Atención (min):</label>
+                <input asp-for="TiempoAtencionMinutos" class="form-control" />
+            </div>
+
+            <div class="col-md-12">
+                <label class="form-label">Preferencias Alimenticias:</label>
+                @{
+                    var opcionesAlimenticias = new[] { "tradicional", "sin gluten", "vegano", "vegetariano", "keto" };
+                }
+                <div class="form-check">
+                    @foreach (var op in opcionesAlimenticias)
+                    {
+                        <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="checkbox" name="PreferenciasAlimenticias" value="@op"
+                                   @(Model.PreferenciasAlimenticias.Contains(op) ? "checked" : "") />
+                            <label class="form-check-label">@op</label>
+                        </div>
+                    }
+                </div>
+            </div>
+
+            <div class="col-md-12">
+                <label class="form-label">Situaciones Sociales:</label>
+                @{
+                    var opcionesSociales = new[] { "solitario", "grupo", "cita", "cumpleaños" };
+                }
+                <div class="form-check">
+                    @foreach (var op in opcionesSociales)
+                    {
+                        <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="checkbox" name="SituacionesSociales" value="@op"
+                                   @(Model.SituacionesSociales.Contains(op) ? "checked" : "") />
+                            <label class="form-check-label">@op</label>
+                        </div>
+                    }
+                </div>
+            </div>
+
+            <div class="col-md-12">
+                <label class="form-label">Métodos de Pago:</label>
+                @{
+                    var opcionesPago = new[] { "efectivo", "tarjeta", "transferencia" };
+                }
+                <div class="form-check">
+                    @foreach (var op in opcionesPago)
+                    {
+                        <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="checkbox" name="MetodosPago" value="@op"
+                                   @(Model.MetodosPago.Contains(op) ? "checked" : "") />
+                            <label class="form-check-label">@op</label>
+                        </div>
+                    }
+                </div>
+            </div>
+        </div>
+
+        <hr class="my-4" />
+        <h4 class="mb-3">🍽️ Categorías de Menú</h4>
+        <div id="categoriasContainer">
+            @for (int i = 0; i < Model.CategoriasMenu.Count; i++)
+            {
+                <div class="categoria-block mb-3">
+                    <label class="form-label">Nombre Categoría:</label>
+                    <input class="form-control mb-2" name="CategoriasMenu[@i].NombreCategoria" value="@Model.CategoriasMenu[i].NombreCategoria" />
+
+                    <div class="platosContainer">
+                        @for (int j = 0; j < Model.CategoriasMenu[i].Platos.Count; j++)
+                        {
+                            <div class="border p-2 rounded mb-2 plato-block">
+                                <div class="row g-2">
+                                    <div class="col-md-4">
+                                        <label class="form-label">Nombre:</label>
+                                        <input class="form-control" name="CategoriasMenu[@i].Platos[@j].Nombre" value="@Model.CategoriasMenu[i].Platos[j].Nombre" />
+                                    </div>
+                                    <div class="col-md-4">
+                                        <label class="form-label">Descripción:</label>
+                                        <input class="form-control" name="CategoriasMenu[@i].Platos[@j].Descripcion" value="@Model.CategoriasMenu[i].Platos[j].Descripcion" />
+                                    </div>
+                                    <div class="col-md-4">
+                                        <label class="form-label">Precio:</label>
+                                        <input class="form-control" name="CategoriasMenu[@i].Platos[@j].Precio" value="@Model.CategoriasMenu[i].Platos[j].Precio" />
+                                    </div>
+                                </div>
+                            </div>
+                        }
+                    </div>
+                    <button type="button" class="btn-agregar mt-2" onclick="agregarPlato(this)">➕ Agregar Plato</button>
+                </div>
+            }
+        </div>
+
+        <button type="button" class="btn-agregar mb-4" onclick="agregarCategoria()">➕ Agregar Categoría</button>
+
+        <div class="text-end">
+            <button type="submit" class="btn-guardar">💾 Guardar Cambios</button>
+        </div>
+    </form>
+</div>
+
+@section Scripts {
+    <script>
+        function agregarCategoria() {
+            const index = document.querySelectorAll('.categoria-block').length;
+            const contenedor = document.getElementById('categoriasContainer');
+
+            const html = `
+            <div class="categoria-block mb-3">
+                <label>Nombre Categoría:</label>
+                <input name="CategoriasMenu[${index}].NombreCategoria" class="form-control mb-2" />
+                <div class="platosContainer">
+                    <div class="border p-2 rounded mb-2 plato-block">
+                        <label>Nombre:</label>
+                        <input name="CategoriasMenu[${index}].Platos[0].Nombre" class="form-control" />
+                        <label>Descripción:</label>
+                        <input name="CategoriasMenu[${index}].Platos[0].Descripcion" class="form-control" />
+                        <label>Precio:</label>
+                        <input name="CategoriasMenu[${index}].Platos[0].Precio" class="form-control" />
+                    </div>
+                </div>
+                <button type="button" class="btn-agregar mt-2" onclick="agregarPlato(this)">➕ Agregar Plato</button>
+            </div>`;
+            contenedor.insertAdjacentHTML('beforeend', html);
+        }
+
+        function agregarPlato(btn) {
+            const categoriaBlock = btn.closest('.categoria-block');
+            const platosContainer = categoriaBlock.querySelector('.platosContainer');
+            const categoriaIndex = Array.from(document.querySelectorAll('.categoria-block')).indexOf(categoriaBlock);
+            const platoIndex = platosContainer.querySelectorAll('.plato-block').length;
+
+            const html = `
+            <div class="border p-2 rounded mb-2 plato-block">
+                <label>Nombre:</label>
+                <input name="CategoriasMenu[${categoriaIndex}].Platos[${platoIndex}].Nombre" class="form-control" />
+                <label>Descripción:</label>
+                <input name="CategoriasMenu[${categoriaIndex}].Platos[${platoIndex}].Descripcion" class="form-control" />
+                <label>Precio:</label>
+                <input name="CategoriasMenu[${categoriaIndex}].Platos[${platoIndex}].Precio" class="form-control" />
+            </div>`;
+            platosContainer.insertAdjacentHTML('beforeend', html);
+        }
+    </script>
+}

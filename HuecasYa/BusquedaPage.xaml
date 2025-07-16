@@ -1,0 +1,268 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="HuecasYa.BusquedaPage"
+             BackgroundColor="{StaticResource Gray100}">
+
+    <ScrollView>
+        <VerticalStackLayout Spacing="16" Padding="0,0,0,16">
+
+            <!-- ⭐ FAVORITOS -->
+            <Frame Padding="0" HasShadow="False" BackgroundColor="{StaticResource White}">
+                <VerticalStackLayout Padding="24,32,24,16">
+                    <Label Text="⭐ Tus Favoritos"
+               FontAttributes="Bold"
+               FontSize="26"
+               TextColor="{StaticResource Primary}"
+               Margin="0,0,0,18"/>
+
+                    <CarouselView x:Name="FavoritosList"
+              HeightRequest="300"
+              PeekAreaInsets="20"
+              IsBounceEnabled="True"
+              IndicatorView="FavoritosIndicator"
+              ItemsLayout="Linear"
+              Margin="0,0,0,8">
+                        <CarouselView.ItemTemplate>
+                            <DataTemplate>
+                                <Frame CornerRadius="20"
+                   Padding="0"
+                   Margin="8,0"
+                   BackgroundColor="White"
+                   HasShadow="True"
+                   WidthRequest="260"
+                   HeightRequest="280"
+                   BorderColor="{StaticResource Gray300}">
+                                    <VerticalStackLayout Padding="16" Spacing="10">
+
+                                        <!-- Nombre del plato -->
+                                        <Label Text="{Binding [nombre]}"
+                           FontSize="18"
+                           FontAttributes="Bold"
+                           TextColor="{StaticResource Primary}" />
+
+                                        <!-- Descripción -->
+                                        <Label Text="{Binding [descripcion]}"
+                           FontSize="13"
+                           LineBreakMode="TailTruncation"
+                           MaxLines="2"
+                           TextColor="{StaticResource Gray700}" />
+
+                                        <!-- Precio -->
+                                        <Label Text="{Binding [precio], StringFormat='💵 Precio: ${0:F2}'}"
+                           FontSize="14"
+                           TextColor="Green" />
+
+                                        <!-- Restaurante -->
+                                        <Label Text="{Binding [restaurante]}"
+                           FontSize="13"
+                           FontAttributes="Bold"
+                           TextColor="{StaticResource Gray900}" />
+
+                                        <!-- Ubicación -->
+                                        <Label Text="{Binding [ubicacion]}"
+                           FontSize="13"
+                           TextColor="{StaticResource Gray600}" />
+
+                                        <!-- Calificación -->
+                                        <Label Text="{Binding [calificacion], StringFormat='⭐ {0:F1}'}"
+                           FontSize="13"
+                           TextColor="Orange" />
+                                    </VerticalStackLayout>
+
+                                    <Frame.GestureRecognizers>
+                                        <TapGestureRecognizer Tapped="OnPlatoTapped"
+                                          CommandParameter="{Binding .}" />
+                                    </Frame.GestureRecognizers>
+                                </Frame>
+                            </DataTemplate>
+                        </CarouselView.ItemTemplate>
+                    </CarouselView>
+
+                    <IndicatorView x:Name="FavoritosIndicator"
+               IndicatorColor="#E0E0E0"
+               SelectedIndicatorColor="{StaticResource Primary}"
+               HorizontalOptions="Center"
+               Margin="0,8,0,0"/>
+
+                </VerticalStackLayout>
+            </Frame>
+
+
+
+            <!-- 🎛️ FILTROS -->
+            <Frame BackgroundColor="{StaticResource White}" Margin="16,0,16,0" HasShadow="True" CornerRadius="20">
+                <VerticalStackLayout Padding="24" Spacing="20">
+
+                    <Label Text="Filtra tu búsqueda"
+                           FontSize="26"
+                           FontAttributes="Bold"
+                           TextColor="{StaticResource Primary}" />
+
+                    <Label Text="Encuentra tu hueca ideal según tu antojo y tu bolsillo"
+                           FontSize="14"
+                           TextColor="{StaticResource Gray600}" />
+
+                    <!-- Campos de filtro aquí -->
+
+                    <!-- Presupuesto -->
+                    <VerticalStackLayout Spacing="8">
+                        <Label Text="💸 Presupuesto" TextColor="{StaticResource Gray700}" />
+                        <Border Stroke="{StaticResource Gray300}" StrokeThickness="1" StrokeShape="RoundRectangle 12" BackgroundColor="{StaticResource Gray100}">
+                            <Entry x:Name="PresupuestoEntry"
+                                   Placeholder="Ej: 3.50"
+                                   Keyboard="Numeric"
+                                   BackgroundColor="Transparent"
+                                   TextColor="{StaticResource Gray900}"
+                                   HeightRequest="48"
+                                   Margin="8,0"/>
+                        </Border>
+                    </VerticalStackLayout>
+
+                    <!-- Preferencia -->
+                    <VerticalStackLayout Spacing="8">
+                        <Label Text="🍲 Preferencia" TextColor="{StaticResource Gray700}" />
+                        <Border Stroke="{StaticResource Gray300}" StrokeThickness="1" StrokeShape="RoundRectangle 12" BackgroundColor="{StaticResource Gray100}">
+                            <Picker x:Name="PreferenciaPicker"
+                                    Title="Entradas, pizzas..."
+                                    BackgroundColor="Transparent"
+                                    TextColor="{StaticResource Gray900}"
+                                    HeightRequest="48"
+                                    Margin="8,0"/>
+                        </Border>
+                    </VerticalStackLayout>
+
+                    <!-- Situación -->
+                    <VerticalStackLayout Spacing="8">
+                        <Label Text="🧑‍🤝‍🧑 Situación" TextColor="{StaticResource Gray700}" />
+                        <Border Stroke="{StaticResource Gray300}" StrokeThickness="1" StrokeShape="RoundRectangle 12" BackgroundColor="{StaticResource Gray100}">
+                            <Picker x:Name="SituacionPicker"
+                                    Title="cita, cumpleaños..."
+                                    BackgroundColor="Transparent"
+                                    TextColor="{StaticResource Gray900}"
+                                    HeightRequest="48"
+                                    Margin="8,0">
+                                <Picker.ItemsSource>
+                                    <x:Array Type="{x:Type x:String}">
+                                        <x:String>solitario</x:String>
+                                        <x:String>grupo</x:String>
+                                        <x:String>cita</x:String>
+                                        <x:String>cumpleaños</x:String>
+                                    </x:Array>
+                                </Picker.ItemsSource>
+                            </Picker>
+                        </Border>
+                    </VerticalStackLayout>
+
+                    <!-- Tiempo de atención -->
+                    <VerticalStackLayout Spacing="8">
+                        <Label Text="⏱ Tiempo máximo" TextColor="{StaticResource Gray700}" />
+                        <Border Stroke="{StaticResource Gray300}" StrokeThickness="1" StrokeShape="RoundRectangle 12" BackgroundColor="{StaticResource Gray100}">
+                            <Entry x:Name="TiempoAtencionEntry"
+                                   Placeholder="Ej: 15"
+                                   Keyboard="Numeric"
+                                   BackgroundColor="Transparent"
+                                   TextColor="{StaticResource Gray900}"
+                                   HeightRequest="48"
+                                   Margin="8,0"/>
+                        </Border>
+                    </VerticalStackLayout>
+
+                    <!-- Método de pago -->
+                    <VerticalStackLayout Spacing="8">
+                        <Label Text="💳 Método de pago" TextColor="{StaticResource Gray700}" />
+                        <Border Stroke="{StaticResource Gray300}" StrokeThickness="1" StrokeShape="RoundRectangle 12" BackgroundColor="{StaticResource Gray100}">
+                            <Picker x:Name="MetodoPagoPicker"
+                                    Title="Efectivo, Tarjeta..."
+                                    BackgroundColor="Transparent"
+                                    TextColor="{StaticResource Gray900}"
+                                    HeightRequest="48"
+                                    Margin="8,0">
+                                <Picker.ItemsSource>
+                                    <x:Array Type="{x:Type x:String}">
+                                        <x:String>efectivo</x:String>
+                                        <x:String>tarjeta</x:String>
+                                        <x:String>transferencia</x:String>
+                                    </x:Array>
+                                </Picker.ItemsSource>
+                            </Picker>
+                        </Border>
+                    </VerticalStackLayout>
+
+                    <!-- Botón buscar -->
+                    <Button Text="🔍 Buscar huecas"
+                            Clicked="OnBuscarClicked"
+                            BackgroundColor="{StaticResource Primary}"
+                            TextColor="White"
+                            FontAttributes="Bold"
+                            FontSize="18"
+                            HeightRequest="52"
+                            CornerRadius="20"
+                            Margin="0,12,0,0"/>
+                </VerticalStackLayout>
+            </Frame>
+
+            <!-- 📋 RESULTADOS -->
+            <CollectionView x:Name="ResultadosList"
+                            ItemsLayout="VerticalList"
+                            SelectionMode="Single"
+                            SelectionChanged="ResultadosList_SelectionChanged"
+                            Margin="16">
+                <CollectionView.ItemTemplate>
+                    <DataTemplate>
+                        <Frame CornerRadius="20"
+       BackgroundColor="{StaticResource White}"
+       Padding="16"
+       Margin="0,0,0,16"
+       HasShadow="True"
+       InputTransparent="False">
+                            <Frame.GestureRecognizers>
+                                <TapGestureRecognizer Tapped="OnPlatoTapped" CommandParameter="{Binding .}" />
+                            </Frame.GestureRecognizers>
+
+                            <VerticalStackLayout Spacing="12">
+
+                                <!-- Imagen del plato -->
+                                <!--<Image Source="{Binding [imagenUrl]}"
+                       Aspect="AspectFill"
+                       HeightRequest="160"
+                       IsVisible="{Binding [imagenUrl], Converter={StaticResource NullToVisibilityConverter}}" />-->
+
+                                <!-- Nombre del plato -->
+                                <Label Text="{Binding [nombre]}"
+                       FontSize="20"
+                       FontAttributes="Bold"
+                       TextColor="{StaticResource Primary}" />
+
+                                <!-- Descripción -->
+                                <Label Text="{Binding [descripcion]}"
+                       FontSize="14"
+                       TextColor="{StaticResource Gray700}" />
+
+                                <!-- Precio -->
+                                <Label Text="{Binding [precio], StringFormat='💵 Precio: ${0:F2}'}"
+                       FontSize="14"
+                       TextColor="Green" />
+
+                                <!-- Restaurante y ubicación -->
+                                <Label Text="{Binding [restaurante]}"
+                       FontSize="13"
+                       FontAttributes="Bold"
+                       TextColor="{StaticResource Gray900}" />
+                                <Label Text="{Binding [ubicacion]}"
+                       FontSize="13"
+                       TextColor="{StaticResource Gray600}" />
+
+                                <!-- Calificación -->
+                                <Label Text="{Binding [calificacion], StringFormat='★ {0:F1}'}"
+                       FontSize="13"
+                       TextColor="Orange" />
+
+                            </VerticalStackLayout>
+                        </Frame>
+                    </DataTemplate>
+                </CollectionView.ItemTemplate>
+            </CollectionView>
+        </VerticalStackLayout>
+    </ScrollView>
+</ContentPage>

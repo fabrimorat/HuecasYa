@@ -1,0 +1,129 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="HuecasYa.DetalleRestaurantePage"
+             Title="Detalles del Restaurante">
+
+    <ScrollView>
+        <VerticalStackLayout Padding="20" Spacing="24">
+
+            <!-- 🏪 Encabezado del Restaurante -->
+            <Frame CornerRadius="20" BackgroundColor="White" Padding="16" HasShadow="True">
+                <VerticalStackLayout Spacing="8">
+                    <Label x:Name="NombreLabel"
+                           FontSize="24"
+                           FontAttributes="Bold"
+                           TextColor="{StaticResource Primary}" />
+
+                    <VerticalStackLayout Spacing="4">
+                        <Label Text="📍 Ubicación" FontSize="14" FontAttributes="Bold" />
+                        <Label x:Name="UbicacionLabel"
+                               FontSize="14"
+                               TextColor="Gray"
+                               LineBreakMode="WordWrap" />
+                    </VerticalStackLayout>
+
+                    <HorizontalStackLayout Spacing="8" VerticalOptions="Center">
+                        <Label Text="⭐" FontSize="16" TextColor="Orange" />
+                        <Label x:Name="CalificacionLabel" FontSize="14" />
+                    </HorizontalStackLayout>
+
+                    <Label x:Name="HorarioLabel"
+                           FontSize="13"
+                           TextColor="{StaticResource Gray700}" />
+
+                    <Label x:Name="PrecioPromedioLabel"
+                           FontSize="13"
+                           TextColor="Green" />
+
+                    <Label x:Name="MetodosPagoLabel"
+                           FontSize="13"
+                           TextColor="{StaticResource Gray700}" />
+
+                    <Label x:Name="PreferenciasLabel"
+                           FontSize="13"
+                           TextColor="{StaticResource Gray700}" />
+
+                    <Label x:Name="SituacionesLabel"
+                           FontSize="13"
+                           TextColor="{StaticResource Gray700}" />
+
+                    <Button Text="🧭 Ver Ubicación"
+                            Clicked="OnAbrirMapaClicked"
+                            BackgroundColor="{StaticResource Primary}"
+                            TextColor="White"
+                            CornerRadius="12"
+                            FontAttributes="Bold"
+                            Margin="0,12,0,0" />
+                </VerticalStackLayout>
+            </Frame>
+
+            <!-- 🧾 Título menú -->
+            <Label Text="Menú del Restaurante"
+                   FontSize="20"
+                   FontAttributes="Bold"
+                   Margin="0,10,0,0"
+                   TextColor="{StaticResource Primary}" />
+
+            <!-- 📋 Menú agrupado -->
+            <CollectionView x:Name="MenuList"
+                            IsGrouped="True"
+                            SelectionMode="None">
+
+                <!-- 🏷️ Encabezado de cada categoría -->
+                <CollectionView.GroupHeaderTemplate>
+                    <DataTemplate>
+                        <Frame BackgroundColor="#fef3f3"
+                               BorderColor="{StaticResource Primary}"
+                               CornerRadius="8"
+                               Padding="12,6"
+                               Margin="0,16,0,8"
+                               HasShadow="False">
+                            <HorizontalStackLayout Spacing="6" VerticalOptions="Center">
+                                <Label Text="🍽️" FontSize="18" />
+                                <Label Text="{Binding Key}"
+                                       FontSize="20"
+                                       FontAttributes="Bold"
+                                       TextColor="{StaticResource Primary}" />
+                            </HorizontalStackLayout>
+                        </Frame>
+                    </DataTemplate>
+                </CollectionView.GroupHeaderTemplate>
+
+                <!-- 🧆 Platos -->
+                <CollectionView.ItemTemplate>
+                    <DataTemplate>
+                        <Frame CornerRadius="16"
+                               BackgroundColor="White"
+                               Padding="12"
+                               Margin="0,5"
+                               HasShadow="True">
+                            <VerticalStackLayout Spacing="6">
+                                <Label Text="{Binding [nombre]}"
+                                       FontSize="16"
+                                       FontAttributes="Bold"
+                                       TextColor="{StaticResource Primary}" />
+
+                                <Label Text="{Binding [descripcion]}"
+                                       FontSize="13"
+                                       TextColor="{StaticResource Gray700}" />
+
+                                <Label Text="{Binding [precio], StringFormat='💵 {0:F2}'}"
+                                       FontSize="14"
+                                       TextColor="Green" />
+
+                                <Button Text="❤️ Favorito"
+                                        BackgroundColor="IndianRed"
+                                        TextColor="White"
+                                        CornerRadius="10"
+                                        Clicked="OnAgregarPlatoFavoritoClicked"
+                                        CommandParameter="{Binding}" />
+                            </VerticalStackLayout>
+                        </Frame>
+                    </DataTemplate>
+                </CollectionView.ItemTemplate>
+            </CollectionView>
+
+        </VerticalStackLayout>
+    </ScrollView>
+</ContentPage>

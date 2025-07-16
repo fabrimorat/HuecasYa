@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<Shell
+    x:Class="HuecasYa.AppShell"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:local="clr-namespace:HuecasYa"
+    Title="HuecasYa"
+
+    Shell.BackgroundColor="{StaticResource Primary}"
+    Shell.ForegroundColor="White"
+    Shell.TitleColor="White"
+    Shell.DisabledColor="Gray"
+    Shell.UnselectedColor="White"
+    Shell.TabBarBackgroundColor="{StaticResource Primary}"
+    Shell.TabBarForegroundColor="White"
+    Shell.NavBarHasShadow="False">
+
+    <ShellContent
+        Title="Login de la Aplicación"
+        ContentTemplate="{DataTemplate local:LoginPage}"
+        Route="MainPage" />
+    
+    <!-- Página inicial visible -->
+    <ShellContent
+        ContentTemplate="{DataTemplate local:LoginPage}"
+        Route="LoginPage" />
+</Shell>
